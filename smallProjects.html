@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>X9R - Portfolio</title>
-    <link rel="shortcut icon" type="x-icon" href="wrench.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="smallProjects.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="icon" type="image/png" href="suitcase.png">
@@ -38,7 +38,6 @@
                 <a href="https://www.linkedin.com/in/abdeljalil-chkir-75135625b/" target="_blank"><i class='bx bxl-linkedin' ></i></a>
             </div>
             <a href="#" class="btn">Download CV</a>
-
         </div>
 
         <div class="home-img">
@@ -151,20 +150,50 @@
       <!-- contact section design  -->
       <section class="contact" id="contact">
         <h2 class="heading">Contact <span>Me</span></h2>
-        <form action="#">
+        <form action="#contact">
             <div class="input-box">
-                <input type="text" placeholder="Full Name">
-                <input type="email" placeholder="Email Adress">
+                <input type="text" id="full_name" placeholder="Full Name">
+                <input type="email" id="email" placeholder="Email Adress">
             </div>
             <div class="input-box">
-                <input type="number" placeholder="Mobile Number">
-                <input type="text" placeholder="Email Subject">
+                <input type="number" id="mobile_number" placeholder="Mobile Number">
+                <input type="text" id="email_subject" placeholder="Email Subject">
             </div>
-            <textarea placeholder="Your Message" name="" id="" cols="30" rows="10"></textarea>
-            <input type="submit" value="Send Message" class="btn">
+            <textarea placeholder="Your Message" id="message" name="" id="" cols="30" rows="10"></textarea>
+            <input type="submit" onclick="sendMail()" id="SendMsgBtn" value="Send Message" class="btn">
         </form>
       </section>
-      
+
+
+
+      <div id="toast" style="z-index:9999; display: none;" class="row mt-3 bg-success">
+        <p class="text-white float-left">Submitted Successfully<span><i class="fa fa-close toast-btn"></i></span></p>
+    </div>
+    
+    <style>
+        .bg-success{
+        background-color: #4BB543;
+        }
+    </style>
+                
+    
+    <style>
+      #toast{
+        border-radius: 2px; width: 270px; height: 50px; 
+        text-align: center; 
+        padding-bottom: 15px;
+        padding-top: 12px;
+        font-size: 18px; position: fixed; bottom: 5px; right: 8px;
+        margin-right: 5px;
+        border-radius: 10px;
+      }
+    
+      .toast-btn{
+        cursor: pointer; padding-left: 10px; color: white;
+      }
+    </style>
+
+    
       <!-- footer design  -->
       <footer class="footer">
         <div class="footer-text">
@@ -186,4 +215,51 @@
 
     <script src="smallProjects.js"></script>
 </body>
+
+<script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
+<script type="text/javascript">
+   (function(){
+      emailjs.init({
+        publicKey: "bOxpyDW4GAEQcRkfq",
+      });
+   })();
+
+   
+
+
+    function sendMail(){
+        var sendMsgBtn = document.getElementById("SendMsgBtn");
+        var toast = document.getElementById("toast");
+        var params = {
+            name: document.getElementById('full_name').value, 
+            email: document.getElementById('email').value, 
+            mobile_number: document.getElementById('mobile_number').value, 
+            email_subject: document.getElementById('email_subject').value, 
+            message: document.getElementById('message').value, 
+        }
+        emailjs.send("service_d4ta4xs", "template_wa9ucp1", params).then(function(res) {
+
+            toast.style.display = "block"; // Show the toast when button is clicked
+                setTimeout(function() {
+                    toast.style.display = "none"; // Hide the toast after 5 seconds
+                }, 5000);
+            
+                var toastButton = toast.querySelector(".toast-btn");
+            if (toastButton) {
+                toastButton.addEventListener("click", function() {
+                    toast.style.display = "none"; // Hide the toast when toast button is clicked
+                });
+            }
+
+
+            var inputFields = document.querySelectorAll("input[type='text'], input[type='email'], input[type='number'], textarea");
+            inputFields.forEach(function(input) {
+                input.value = '';
+            });
+        })
+    }
+</script>
+
 </html>

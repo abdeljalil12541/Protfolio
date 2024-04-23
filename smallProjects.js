@@ -63,3 +63,4 @@ menuIcon.onclick = () =>{
     navbar.classList.toggle('alo');
     
 }
+
